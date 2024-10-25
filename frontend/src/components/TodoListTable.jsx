@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { getTasks } from "../services/tasksTableService";
-import { ThemeProvider } from "@chakra-ui/core";
 import '../style/TodoListTable.css'
 
 
