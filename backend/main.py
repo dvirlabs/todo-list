@@ -2,6 +2,12 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 from db_utils import *
+from pydantic import BaseModel
+
+class Task(BaseModel):
+    task: str
+    status: str
+    notes: str
 
 app = FastAPI()
 
@@ -20,6 +26,10 @@ async def root():
 @app.get("/get_all_tasks")
 def get_all_tasks():
     return get_todo_table()
+
+@app.post("/add_task")
+def add_task(task: Task):
+    return insert_task(task.task, task.status, task.notes)
 
 
 
