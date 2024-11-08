@@ -1,6 +1,7 @@
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
+
 def connect_to_db():
     conn = psycopg2.connect(
         host="192.168.10.55",
@@ -13,17 +14,10 @@ def connect_to_db():
 
 def close_db(conn):
     conn.close()
-    
-# def get_todo_table():
-#     conn = connect_to_db()
-#     cur = conn.cursor()
-#     cur.execute("SELECT * FROM tasks")
-#     rows = cur.fetchall()
-#     close_db(conn)
-#     return rows
 
 
 def get_todo_table():
+    connection = None
     try:
         connection = connect_to_db()
         
@@ -36,6 +30,24 @@ def get_todo_table():
     except Exception as e:
         print(f"Error fetching data from the database: {e}")
         return []
+
+    finally:
+        # Ensure the connection is closed
+        if connection:
+            connection.close()
+            
+            
+def insert_task(task, status, notes):
+    try:
+        connection = connect_to_db()
+        
+        # Use a context manager to handle the cursor
+        with connection.cursor() as cur:
+            cur.execute("INSERT INTO tasks (task, status, notes) VALUES (%s, %s, %s)", (task, status, notes))
+            connection.commit()
+
+    except Exception as e:
+        print(f"Error inserting data into the database: {e}")
 
     finally:
         # Ensure the connection is closed
