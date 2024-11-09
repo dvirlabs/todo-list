@@ -31,6 +31,14 @@ def get_all_tasks():
 def add_task(task: Task):
     return insert_task(task.task, task.status, task.notes)
 
+@app.delete("/delete_task/{task_id}")
+def remove_task(task_id: int):
+    return delete_task(task_id)
+
+@app.put("/update_task/{task_id}")
+def modify_task(task_id: int, task: str, status: str, notes: str):
+    return update_task(task_id, task, status, notes)
+
 
 
 
