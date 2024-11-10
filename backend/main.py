@@ -9,6 +9,11 @@ class Task(BaseModel):
     task: str
     status: str
     notes: str
+    
+class TaskUpdate(BaseModel):
+    task: Optional[str] = None
+    status: Optional[str] = None
+    notes: Optional[str] = None
 
 app = FastAPI()
 
@@ -37,8 +42,10 @@ def remove_task(task_id: int):
     return delete_task(task_id)
 
 @app.put("/update_task/{task_id}")
-def modify_task(task_id: int, task: Optional[str] = None, status: Optional[str] = None, notes: Optional[str] = None):
-    return update_task(task_id, task, status, notes)
+def modify_task(task_id: int, update_data: TaskUpdate):
+    # print(f"Received update request for task_id: {task_id}")
+    # print(f"Updated task data - task: {task}, status: {status}, notes: {notes}")
+     return update_task(task_id, update_data.task, update_data.status, update_data.notes)
 
 
 

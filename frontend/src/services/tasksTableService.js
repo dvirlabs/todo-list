@@ -52,6 +52,7 @@ export const deleteTask = async (taskId) => {
 };
 
 export const updateTask = async (taskId, updatedData) => {
+    console.log(updatedData)
     try {
         const response = await fetch(`${API_URL}/update_task/${taskId}`, {
             method: 'PUT',
