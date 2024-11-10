@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { getTasks, deleteTask, undoDeleteTask } from "../services/tasksTableService"; // Make sure you have functions for delete and undo
-import { Delete, Edit, Undo } from "@mui/icons-material"; // Import icons
+import { getTasks, deleteTask, undoDeleteTask, updateTask } from "../services/tasksTableService";
+import { Delete, Edit, Undo } from "@mui/icons-material";
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, Select, MenuItem } from "@mui/material";
 import '../style/TodoListTable.css';
 
 const TodoListTable = () => {
     const [data, setData] = useState([]);
-    const [deletedTasks, setDeletedTasks] = useState([]); // To store deleted tasks temporarily
+    const [deletedTasks, setDeletedTasks] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+
+    // Edit dialog state
+    const [openEditDialog, setOpenEditDialog] = useState(false);
+    const [currentTask, setCurrentTask] = useState(null);
+    const [editedTaskData, setEditedTaskData] = useState({ task: "", status: "", notes: "" });
 
     useEffect(() => {
         setIsLoading(true);
@@ -23,22 +29,64 @@ const TodoListTable = () => {
     }, []);
 
     const handleDelete = (taskId) => {
-        // Delete the task and temporarily store it in the deletedTasks state
         const taskToDelete = data.find(task => task.id === taskId);
         setDeletedTasks([...deletedTasks, taskToDelete]);
         setData(data.filter(task => task.id !== taskId));
 
-        // Call the delete task API
         deleteTask(taskId);
     };
 
     const handleUndoDelete = (task) => {
-        // Undo the delete by adding the task back to the table and removed from deletedTasks
         setData([...data, task]);
         setDeletedTasks(deletedTasks.filter(t => t.id !== task.id));
 
-        // Call the undo delete API (you might need to implement this in the backend)
         undoDeleteTask(task.id);
+    };
+
+    // Open edit dialog
+    const handleOpenEditDialog = (task) => {
+        setCurrentTask(task);
+        setEditedTaskData({ task: task.task, status: task.status, notes: task.notes });
+        setOpenEditDialog(true);
+    };
+
+    // Close edit dialog
+    const handleCloseEditDialog = () => {
+        setOpenEditDialog(false);
+        setCurrentTask(null);
+    };
+
+    // Save the edited task
+    const handleSaveEdit = async () => {
+        if (currentTask) {
+            const updatedTask = { ...currentTask, ...editedTaskData };
+            const response = await updateTask(updatedTask.id, editedTaskData);
+            if (response.message) {
+                // Update data locally after successful response
+                setData(data.map(task => (task.id === currentTask.id ? updatedTask : task)));
+                handleCloseEditDialog();
+            }
+        }
+    };
+
+    const handleStatusChange = async (taskId, newStatus) => {
+        const updatedTask = data.find((task) => task.id === taskId);
+        if (updatedTask) {
+            const response = await updateTask(taskId, { ...updatedTask, status: newStatus });
+            if (response.message) {
+                setData((prevData) =>
+                    prevData.map((task) =>
+                        task.id === taskId ? { ...task, status: newStatus } : task
+                    )
+                );
+            }
+        }
+    };
+
+    // Handle input change for edited task
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setEditedTaskData(prevState => ({ ...prevState, [name]: value }));
     };
 
     return (
@@ -48,35 +96,42 @@ const TodoListTable = () => {
             <table>
                 <thead>
                     <tr>
-                        <th>id</th>
+                        {/* <th>id</th> */}
                         <th>task</th>
                         <th>status</th>
                         <th>notes</th>
-                        <th>Actions</th> {/* Column for action buttons */}
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {Array.isArray(data) && data.map((task) => (
                         <tr key={task.id}>
-                            <td>{task.id}</td>
+                            {/* <td>{task.id}</td> */}
                             <td>{task.task}</td>
-                            <td>{task.status}</td>
+                            <td>
+                                <Select
+                                    value={task.status}
+                                    onChange={(e) => handleStatusChange(task.id, e.target.value)}
+                                    fullWidth
+                                    variant="standard"
+                                    style={{ minWidth: "100px", color: "white", fontSize: "25px" }}
+                                    >
+                                    <MenuItem value="todo">Todo</MenuItem>
+                                    <MenuItem value="in progress">In Progress</MenuItem>
+                                    <MenuItem value="done">Done</MenuItem>
+                                </Select>
+                            </td>
                             <td>{task.notes}</td>
                             <td>
-                                {/* Edit button */}
-                                <button className="action-button">
-                                    <Edit />
+                                <button className="action-button" onClick={() => handleOpenEditDialog(task)}>
+                                    <Edit color="warning" />
                                 </button>
-
-                                {/* Delete button */}
                                 <button className="action-button" onClick={() => handleDelete(task.id)}>
-                                    <Delete />
+                                    <Delete color="error" />
                                 </button>
-
-                                {/* Undo Delete button */}
                                 {deletedTasks.some(t => t.id === task.id) && (
                                     <button className="action-button" onClick={() => handleUndoDelete(task)}>
-                                        <Undo />
+                                    <Undo />
                                     </button>
                                 )}
                             </td>
@@ -84,8 +139,47 @@ const TodoListTable = () => {
                     ))}
                 </tbody>
             </table>
+
+            {/* Edit Task Dialog */}
+            <Dialog open={openEditDialog} onClose={handleCloseEditDialog}>
+                <DialogTitle>Edit Task</DialogTitle>
+                <DialogContent>
+                    <TextField
+                        label="Task"
+                        name="task"
+                        value={editedTaskData.task}
+                        onChange={handleInputChange}
+                        fullWidth
+                        margin="normal"
+                    />
+                    <Select
+                        label="Status"
+                        name="status"
+                        value={editedTaskData.status}
+                        onChange={handleInputChange}
+                        fullWidth
+                        margin="dense"
+                    >
+                        <MenuItem value="todo">Todo</MenuItem>
+                        <MenuItem value="in progress">In Progress</MenuItem>
+                        <MenuItem value="done">Done</MenuItem>
+                    </Select>
+                    <TextField
+                        label="Notes"
+                        name="notes"
+                        value={editedTaskData.notes}
+                        onChange={handleInputChange}
+                        fullWidth
+                        margin="normal"
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseEditDialog} color="secondary">Cancel</Button>
+                    <Button onClick={handleSaveEdit} color="primary">Save</Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
-}
+};
 
 export default TodoListTable;

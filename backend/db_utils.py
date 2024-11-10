@@ -19,7 +19,7 @@ def get_todo_table():
     try:
         connection = connect_to_db()
         with connection.cursor(cursor_factory=RealDictCursor) as cur:
-            cur.execute("SELECT * FROM tasks")
+            cur.execute("SELECT * FROM tasks ORDER BY id ASC")
             rows = cur.fetchall()
             return rows
     except Exception as e:
@@ -64,9 +64,37 @@ def update_task(task_id, task, status, notes):
     try:
         connection = connect_to_db()
         with connection.cursor() as cur:
-            cur.execute("UPDATE tasks SET task = %s, status = %s, notes = %s WHERE id = %s", (task, status, notes, task_id))
-            connection.commit()
-        return {"message": "Task updated successfully"}
+            fields_to_update = []
+            values_to_update = []
+            
+            if task is not None:
+                fields_to_update.append("task = %s")
+                values_to_update.append(task)
+            
+            if status is not None:
+                fields_to_update.append("status = %s")
+                values_to_update.append(status)
+                
+            if notes is not None:
+                fields_to_update.append("notes = %s")
+                values_to_update.append(notes)
+                
+            if fields_to_update:
+                # Update the query with placeholders
+                update_query = "UPDATE tasks SET " + ", ".join(fields_to_update) + " WHERE id = %s"
+                values_to_update.append(task_id)
+
+                print("Executing query:", update_query)
+                print("With values:", values_to_update)
+                
+                cur.execute(update_query, tuple(values_to_update))
+                connection.commit()
+                print("Update committed to database.")
+                
+                return {"message": "Task updated successfully"}
+            else:
+                return {"message": "No fields to update"}
+            
     except Exception as e:
         print(f"Error updating task: {e}")
         return {"error": "Error updating task"}
