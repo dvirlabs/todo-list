@@ -97,31 +97,16 @@ const TodoListTable = () => {
                 <thead>
                     <tr>
                         {/* <th>id</th> */}
-                        <th>task</th>
-                        <th>status</th>
-                        <th>notes</th>
-                        <th>Actions</th>
+                        <th>פעולות</th>
+                        <th>הערות</th>
+                        <th>מצב</th>
+                        <th>משימה</th>
                     </tr>
                 </thead>
                 <tbody>
                     {Array.isArray(data) && data.map((task) => (
                         <tr key={task.id}>
                             {/* <td>{task.id}</td> */}
-                            <td>{task.task}</td>
-                            <td>
-                                <Select
-                                    value={task.status}
-                                    onChange={(e) => handleStatusChange(task.id, e.target.value)}
-                                    fullWidth
-                                    variant="standard"
-                                    style={{ minWidth: "100px", color: "white", fontSize: "25px" }}
-                                    >
-                                    <MenuItem value="todo">Todo</MenuItem>
-                                    <MenuItem value="in progress">In Progress</MenuItem>
-                                    <MenuItem value="done">Done</MenuItem>
-                                </Select>
-                            </td>
-                            <td>{task.notes}</td>
                             <td>
                                 <button className="action-button" onClick={() => handleOpenEditDialog(task)}>
                                     <Edit color="warning" />
@@ -135,6 +120,21 @@ const TodoListTable = () => {
                                     </button>
                                 )}
                             </td>
+                            <td>{task.notes}</td>
+                            <td>
+                                <Select
+                                    value={task.status}
+                                    onChange={(e) => handleStatusChange(task.id, e.target.value)}
+                                    fullWidth
+                                    variant="standard"
+                                    style={{ minWidth: "100px", color: "white", fontSize: "25px" }}
+                                    >
+                                    <MenuItem value="todo">לעשות</MenuItem>
+                                    <MenuItem value="in progress">בתהליך</MenuItem>
+                                    <MenuItem value="done">בוצע</MenuItem>
+                                </Select>
+                            </td>
+                            <td>{task.task}</td>
                         </tr>
                     ))}
                 </tbody>
@@ -160,9 +160,9 @@ const TodoListTable = () => {
                         fullWidth
                         margin="dense"
                     >
-                        <MenuItem value="todo">Todo</MenuItem>
-                        <MenuItem value="in progress">In Progress</MenuItem>
-                        <MenuItem value="done">Done</MenuItem>
+                        <MenuItem value="todo">לעשות</MenuItem>
+                        <MenuItem value="in progress">בתהליך</MenuItem>
+                        <MenuItem value="done">בוצע</MenuItem>
                     </Select>
                     <TextField
                         label="Notes"
@@ -174,8 +174,8 @@ const TodoListTable = () => {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseEditDialog} color="secondary">Cancel</Button>
-                    <Button onClick={handleSaveEdit} color="primary">Save</Button>
+                    <Button onClick={handleCloseEditDialog} color="secondary">ביטול</Button>
+                    <Button onClick={handleSaveEdit} color="primary">שמור</Button>
                 </DialogActions>
             </Dialog>
         </div>
