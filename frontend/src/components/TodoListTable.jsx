@@ -124,14 +124,14 @@ const TodoListTable = () => {
                             <td>{task.notes}</td>
                             <td>
                                 <button className="action-button" onClick={() => handleOpenEditDialog(task)}>
-                                    <Edit />
+                                    <Edit color="warning" />
                                 </button>
                                 <button className="action-button" onClick={() => handleDelete(task.id)}>
-                                    <Delete />
+                                    <Delete color="error" />
                                 </button>
                                 {deletedTasks.some(t => t.id === task.id) && (
                                     <button className="action-button" onClick={() => handleUndoDelete(task)}>
-                                        <Undo />
+                                    <Undo />
                                     </button>
                                 )}
                             </td>
