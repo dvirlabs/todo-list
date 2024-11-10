@@ -11,3 +11,18 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Custom fonts */
+@font-face {
+  font-family: 'Gadi Almog';
+  src: url('../public/fonts/gadi-almog-regular-aaa.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Varela Round';
+  src: url('../public/fonts/VarelaRound-Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
