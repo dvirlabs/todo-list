@@ -69,6 +69,20 @@ const TodoListTable = () => {
         }
     };
 
+    const handleStatusChange = async (taskId, newStatus) => {
+        const updatedTask = data.find((task) => task.id === taskId);
+        if (updatedTask) {
+            const response = await updateTask(taskId, { ...updatedTask, status: newStatus });
+            if (response.message) {
+                setData((prevData) =>
+                    prevData.map((task) =>
+                        task.id === taskId ? { ...task, status: newStatus } : task
+                    )
+                );
+            }
+        }
+    };
+
     // Handle input change for edited task
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -94,7 +108,19 @@ const TodoListTable = () => {
                         <tr key={task.id}>
                             {/* <td>{task.id}</td> */}
                             <td>{task.task}</td>
-                            <td>{task.status}</td>
+                            <td>
+                                <Select
+                                    value={task.status}
+                                    onChange={(e) => handleStatusChange(task.id, e.target.value)}
+                                    fullWidth
+                                    variant="standard"
+                                    style={{ minWidth: "100px", color: "white", fontSize: "25px" }}
+                                    >
+                                    <MenuItem value="todo">Todo</MenuItem>
+                                    <MenuItem value="in progress">In Progress</MenuItem>
+                                    <MenuItem value="done">Done</MenuItem>
+                                </Select>
+                            </td>
                             <td>{task.notes}</td>
                             <td>
                                 <button className="action-button" onClick={() => handleOpenEditDialog(task)}>
