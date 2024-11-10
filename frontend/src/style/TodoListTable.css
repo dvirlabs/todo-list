@@ -4,3 +4,8 @@ th, td {
     padding: 7px;
     font-size: 30px;
 }
+
+body {
+    direction: rtl;
+    text-align: right;
+  }

@@ -97,30 +97,17 @@ const TodoListTable = () => {
                 <thead>
                     <tr>
                         {/* <th>id</th> */}
-                        <th>פעולות</th>
-                        <th>הערות</th>
-                        <th>מצב</th>
                         <th>משימה</th>
+                        <th>מצב</th>
+                        <th>הערות</th>
+                        <th>פעולות</th>
                     </tr>
                 </thead>
                 <tbody>
                     {Array.isArray(data) && data.map((task) => (
                         <tr key={task.id}>
                             {/* <td>{task.id}</td> */}
-                            <td>
-                                <button className="action-button" onClick={() => handleOpenEditDialog(task)}>
-                                    <Edit color="warning" />
-                                </button>
-                                <button className="action-button" onClick={() => handleDelete(task.id)}>
-                                    <Delete color="error" />
-                                </button>
-                                {deletedTasks.some(t => t.id === task.id) && (
-                                    <button className="action-button" onClick={() => handleUndoDelete(task)}>
-                                    <Undo />
-                                    </button>
-                                )}
-                            </td>
-                            <td>{task.notes}</td>
+                            <td>{task.task}</td>
                             <td>
                                 <Select
                                     value={task.status}
@@ -134,7 +121,20 @@ const TodoListTable = () => {
                                     <MenuItem value="done">בוצע</MenuItem>
                                 </Select>
                             </td>
-                            <td>{task.task}</td>
+                            <td>{task.notes}</td>
+                            <td>
+                                <button className="action-button" onClick={() => handleOpenEditDialog(task)}>
+                                    <Edit color="warning" />
+                                </button>
+                                <button className="action-button" onClick={() => handleDelete(task.id)}>
+                                    <Delete color="error" />
+                                </button>
+                                {deletedTasks.some(t => t.id === task.id) && (
+                                    <button className="action-button" onClick={() => handleUndoDelete(task)}>
+                                    <Undo />
+                                    </button>
+                                )}
+                            </td>
                         </tr>
                     ))}
                 </tbody>
@@ -142,10 +142,10 @@ const TodoListTable = () => {
 
             {/* Edit Task Dialog */}
             <Dialog open={openEditDialog} onClose={handleCloseEditDialog}>
-                <DialogTitle>Edit Task</DialogTitle>
+                <DialogTitle>ערוך משימה</DialogTitle>
                 <DialogContent>
                     <TextField
-                        label="Task"
+                        label="ערוך משימה"
                         name="task"
                         value={editedTaskData.task}
                         onChange={handleInputChange}
@@ -165,7 +165,7 @@ const TodoListTable = () => {
                         <MenuItem value="done">בוצע</MenuItem>
                     </Select>
                     <TextField
-                        label="Notes"
+                        label="ערוך הערות"
                         name="notes"
                         value={editedTaskData.notes}
                         onChange={handleInputChange}
