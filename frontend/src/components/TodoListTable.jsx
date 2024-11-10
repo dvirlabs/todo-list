@@ -97,10 +97,10 @@ const TodoListTable = () => {
                 <thead>
                     <tr>
                         {/* <th>id</th> */}
-                        <th>task</th>
-                        <th>status</th>
-                        <th>notes</th>
-                        <th>Actions</th>
+                        <th>משימה</th>
+                        <th>מצב</th>
+                        <th>הערות</th>
+                        <th>פעולות</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -116,9 +116,9 @@ const TodoListTable = () => {
                                     variant="standard"
                                     style={{ minWidth: "100px", color: "white", fontSize: "25px" }}
                                     >
-                                    <MenuItem value="todo">Todo</MenuItem>
-                                    <MenuItem value="in progress">In Progress</MenuItem>
-                                    <MenuItem value="done">Done</MenuItem>
+                                    <MenuItem value="todo">לעשות</MenuItem>
+                                    <MenuItem value="in progress">בתהליך</MenuItem>
+                                    <MenuItem value="done">בוצע</MenuItem>
                                 </Select>
                             </td>
                             <td>{task.notes}</td>
@@ -142,10 +142,10 @@ const TodoListTable = () => {
 
             {/* Edit Task Dialog */}
             <Dialog open={openEditDialog} onClose={handleCloseEditDialog}>
-                <DialogTitle>Edit Task</DialogTitle>
+                <DialogTitle>ערוך משימה</DialogTitle>
                 <DialogContent>
                     <TextField
-                        label="Task"
+                        label="ערוך משימה"
                         name="task"
                         value={editedTaskData.task}
                         onChange={handleInputChange}
@@ -160,12 +160,12 @@ const TodoListTable = () => {
                         fullWidth
                         margin="dense"
                     >
-                        <MenuItem value="todo">Todo</MenuItem>
-                        <MenuItem value="in progress">In Progress</MenuItem>
-                        <MenuItem value="done">Done</MenuItem>
+                        <MenuItem value="todo">לעשות</MenuItem>
+                        <MenuItem value="in progress">בתהליך</MenuItem>
+                        <MenuItem value="done">בוצע</MenuItem>
                     </Select>
                     <TextField
-                        label="Notes"
+                        label="ערוך הערות"
                         name="notes"
                         value={editedTaskData.notes}
                         onChange={handleInputChange}
@@ -174,8 +174,8 @@ const TodoListTable = () => {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseEditDialog} color="secondary">Cancel</Button>
-                    <Button onClick={handleSaveEdit} color="primary">Save</Button>
+                    <Button onClick={handleCloseEditDialog} color="secondary">ביטול</Button>
+                    <Button onClick={handleSaveEdit} color="primary">שמור</Button>
                 </DialogActions>
             </Dialog>
         </div>

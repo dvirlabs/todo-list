@@ -1,6 +1,19 @@
 th, td {
     text-align: center;
     border: 1px solid gray;
-    padding: 7px;
+    padding: 20px;
     font-size: 30px;
 }
+
+th {
+    font-family: 'Varela Round', sans-serif;
+}
+
+td {
+    font-family: 'Gadi Almog', cursive;
+}
+
+body {
+    direction: rtl;
+    text-align: right;
+  }

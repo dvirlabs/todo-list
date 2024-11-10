@@ -37,10 +37,10 @@ const InsertNewTask = () => {
     return (
         <div className="insert-new-task-container" style={{marginTop: '10px', marginBottom: '10px'}}>
             <Box onSubmit={handleSubmit}>
-                <input type="text" name="task" value={task.task} onChange={handleChange} placeholder="Task" />
-                <input type="text" name="status" value={task.status} onChange={handleChange} placeholder="Status" />
-                <input type="text" name="notes" value={task.notes} onChange={handleChange} placeholder="Notes" />
-                <Button type="submit" variant="contained" color="success" style={{ marginLeft: '10px', marginTop: '7px' }} >Add Task</Button>
+                <input type="text" name="task" value={task.task} onChange={handleChange} placeholder="משימה חדשה" />
+                <input type="text" name="status" value={task.status} onChange={handleChange} placeholder="מצב משימה" />
+                <input type="text" name="notes" value={task.notes} onChange={handleChange} placeholder="הערות" />
+                <Button type="submit" variant="contained" color="success" style={{ marginLeft: '10px', marginTop: '7px' }} >הוסף משימה</Button>
             </Box>
         </div>
     );
