@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getTasks, deleteTask, undoDeleteTask, updateTask } from "../services/tasksTableService";
 import { Delete, Edit, Undo } from "@mui/icons-material";
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from "@mui/material";
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, Select, MenuItem } from "@mui/material";
 import '../style/TodoListTable.css';
 
 const TodoListTable = () => {
@@ -126,14 +126,18 @@ const TodoListTable = () => {
                         fullWidth
                         margin="normal"
                     />
-                    <TextField
+                    <Select
                         label="Status"
                         name="status"
                         value={editedTaskData.status}
                         onChange={handleInputChange}
                         fullWidth
-                        margin="normal"
-                    />
+                        margin="dense"
+                    >
+                        <MenuItem value="todo">Todo</MenuItem>
+                        <MenuItem value="in progress">In Progress</MenuItem>
+                        <MenuItem value="done">Done</MenuItem>
+                    </Select>
                     <TextField
                         label="Notes"
                         name="notes"
