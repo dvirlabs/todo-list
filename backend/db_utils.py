@@ -19,7 +19,7 @@ def get_todo_table():
     try:
         connection = connect_to_db()
         with connection.cursor(cursor_factory=RealDictCursor) as cur:
-            cur.execute("SELECT * FROM tasks")
+            cur.execute("SELECT * FROM tasks ORDER BY id ASC")
             rows = cur.fetchall()
             return rows
     except Exception as e:
