@@ -82,7 +82,7 @@ const TodoListTable = () => {
             <table>
                 <thead>
                     <tr>
-                        <th>id</th>
+                        {/* <th>id</th> */}
                         <th>task</th>
                         <th>status</th>
                         <th>notes</th>
@@ -92,7 +92,7 @@ const TodoListTable = () => {
                 <tbody>
                     {Array.isArray(data) && data.map((task) => (
                         <tr key={task.id}>
-                            <td>{task.id}</td>
+                            {/* <td>{task.id}</td> */}
                             <td>{task.task}</td>
                             <td>{task.status}</td>
                             <td>{task.notes}</td>
