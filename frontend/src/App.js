@@ -1,12 +1,13 @@
 import './App.css';
-import './components/TodoListTable';
 import TodoListTable from './components/TodoListTable';
 import InsertNewTask from './components/InsertNewTask';
+import TodoListTitle from './components/TodoListTitle';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <TodoListTitle />
         <TodoListTable />
         <InsertNewTask />
       </header>
