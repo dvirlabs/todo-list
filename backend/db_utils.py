@@ -64,9 +64,32 @@ def update_task(task_id, task, status, notes):
     try:
         connection = connect_to_db()
         with connection.cursor() as cur:
-            cur.execute("UPDATE tasks SET task = %s, status = %s, notes = %s WHERE id = %s", (task, status, notes, task_id))
-            connection.commit()
-        return {"message": "Task updated successfully"}
+            
+            filelds_to_update = []
+            values_to_update = []
+            
+            if task is not None:
+                filelds_to_update.append("task = %s")
+                values_to_update.append(task)
+            
+            if status is not None:
+                filelds_to_update.append("status = %s")
+                values_to_update.append(status)
+                
+            if notes is not None:
+                filelds_to_update.append("notes = %s")
+                values_to_update.append(notes)
+                
+            if filelds_to_update:
+                update_query = "UPDATE tasks SET " + ", ".join(filelds_to_update) + " WHERE id = %s"
+                values_to_update.append(task_id)
+                
+                cur.execute(update_query, tuple(values_to_update))
+                connection.commit()
+                return {"message": "Task updated successfully"}
+            else:
+                return {"message": "No fields to update"}
+            
     except Exception as e:
         print(f"Error updating task: {e}")
         return {"error": "Error updating task"}

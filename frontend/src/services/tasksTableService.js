@@ -25,6 +25,7 @@ export const createTask = async (task) => {
             throw new Error('Failed to add task');
         }
         const data = await response.json();
+
         return data;
     } catch (error) {
         console.error('Error:', error);
@@ -50,6 +51,26 @@ export const deleteTask = async (taskId) => {
     }
 };
 
+export const updateTask = async (taskId, updatedData) => {
+    try {
+        const response = await fetch(`${API_URL}/update_task/${taskId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedData)
+        });
+        if (!response.ok) {
+            throw new Error('Failed to update task');
+        }
+        return response.json();
+    } catch (error) {
+        console.error('Error:', error);
+        throw error;
+    }
+};
+
+
 
 export const undoDeleteTask = async (taskId) => {
     try {
@@ -68,9 +89,3 @@ export const undoDeleteTask = async (taskId) => {
     }
 };
 
-
-// export const getTask = async (id) => {
-//     const response = await fetch(`${API_URL}/tasks/${id}`)
-//     const data = await response.json()
-//     return data
-// }

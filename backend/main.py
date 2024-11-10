@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 from db_utils import *
 from pydantic import BaseModel
+from typing import Optional
 
 class Task(BaseModel):
     task: str
@@ -36,7 +37,7 @@ def remove_task(task_id: int):
     return delete_task(task_id)
 
 @app.put("/update_task/{task_id}")
-def modify_task(task_id: int, task: str, status: str, notes: str):
+def modify_task(task_id: int, task: Optional[str] = None, status: Optional[str] = None, notes: Optional[str] = None):
     return update_task(task_id, task, status, notes)
 
 
