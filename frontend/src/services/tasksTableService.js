@@ -25,6 +25,7 @@ export const createTask = async (task) => {
             throw new Error('Failed to add task');
         }
         const data = await response.json();
+        console.log(data);
 
         return data;
     } catch (error) {
