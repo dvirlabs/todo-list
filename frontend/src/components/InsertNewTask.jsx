@@ -56,7 +56,7 @@ const InsertNewTask = () => {
                     <MenuItem value="done">בוצע</MenuItem>
                 </Select>
                 <input type="text" name="notes" value={task.notes} onChange={handleChange} placeholder="הערות" />
-                <Button type="submit" variant="contained" color="success" style={{ marginLeft: '10px', marginTop: '7px' }} >הוסף משימה</Button>
+                <Button type="submit" variant="contained" color="success" style={{ marginLeft: '10px', marginTop: '5px' }} >הוסף משימה</Button>
             </form>
         </div>
     );
