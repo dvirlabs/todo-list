@@ -106,7 +106,7 @@ const TodoListTable = () => {
                 <tbody>
                     {Array.isArray(data) && data.map((task) => (
                         <tr key={task.id}>
-                            {/* <td>{task.id}</td> */}
+                            {/* <td>{task.id}</td> */} {/* Leave it for tests*/}
                             <td>{task.task}</td>
                             <td>
                                 <Select
@@ -130,9 +130,9 @@ const TodoListTable = () => {
                                     <Delete color="error" />
                                 </button>
                                 {deletedTasks.some(t => t.id === task.id) && (
-                                    <button className="action-button" onClick={() => handleUndoDelete(task)}>
-                                    <Undo />
-                                    </button>
+                                <button className="action-button" onClick={() => handleUndoDelete(task)}>
+                                    <Undo color="info" />
+                                </button>
                                 )}
                             </td>
                         </tr>
