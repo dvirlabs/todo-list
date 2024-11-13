@@ -48,7 +48,7 @@ const InsertNewTask = () => {
                     value={task.status} 
                     onChange={handleChange} 
                     placeholder="מצב משימה"
-                    sx={{ width: '110px', height: '39px', marginTop: '7px', marginLeft: '10px', color: 'white', fontSize: '17px', fontFamily: 'Varela Round, sans-serif' }}
+                    sx={{ width: '110px', height: '39px', marginTop: '7px', marginLeft: '10px', background: 'white', color: 'white', fontSize: '17px', fontFamily: 'Varela Round, sans-serif' }}
 
                 >
                     <MenuItem value="todo">לעשות</MenuItem>
