@@ -51,8 +51,8 @@ const InsertNewTask = () => {
                     sx={{ width: '100px', marginTop: '7px', color: 'white', fontSize: '17px', fontFamily: 'Varela Round, sans-serif' }}
 
                 >
-                    <MenuItem value="open">לעשות</MenuItem>
-                    <MenuItem value="in-progress">בתהליך</MenuItem>
+                    <MenuItem value="todo">לעשות</MenuItem>
+                    <MenuItem value="in progress">בתהליך</MenuItem>
                     <MenuItem value="done">בוצע</MenuItem>
                 </Select>
                 <input type="text" name="notes" value={task.notes} onChange={handleChange} placeholder="הערות" />
