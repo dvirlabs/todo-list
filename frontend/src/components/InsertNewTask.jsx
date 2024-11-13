@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import '../style/InsertNewTask.css';
 import { createTask } from "../services/tasksTableService";
-import { Button, Box, Select, MenuItem } from '@mui/material';
+import { Button, Select, MenuItem } from '@mui/material';
 
 
 
