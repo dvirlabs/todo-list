@@ -2,6 +2,12 @@ body {
     direction: rtl;
     text-align: right;
   }
+  
+table {
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+}
 
 th, td {
     text-align: center;
