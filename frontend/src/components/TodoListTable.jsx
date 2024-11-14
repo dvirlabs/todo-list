@@ -114,7 +114,7 @@ const TodoListTable = () => {
                                     onChange={(e) => handleStatusChange(task.id, e.target.value)}
                                     fullWidth
                                     variant="standard"
-                                    style={{ minWidth: "100px", color: "white", fontSize: "25px" }}
+                                    style={{ minWidth: "100px", color: "white", fontSize: "25px", fontFamily: 'Gadi Almog, cursive' }}
                                     >
                                     <MenuItem value="todo">לעשות</MenuItem>
                                     <MenuItem value="in progress">בתהליך</MenuItem>
