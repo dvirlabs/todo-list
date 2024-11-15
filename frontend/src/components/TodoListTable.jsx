@@ -106,7 +106,6 @@ const TodoListTable = () => {
                 <tbody>
                     {Array.isArray(data) && data.map((task) => (
                         <tr key={task.id}>
-                            {/* <td>{task.id}</td> */} {/* Leave it for tests*/}
                             <td>{task.task}</td>
                             <td>
                                 <Select
