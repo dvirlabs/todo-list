@@ -4,6 +4,7 @@ import { Delete, Edit, Undo } from "@mui/icons-material";
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, Select, MenuItem } from "@mui/material";
 import { toast } from 'react-toastify';
 import '../style/TodoListTable.css';
+import { blue } from "@mui/material/colors";
 
 const TodoListTable = () => {
     const [data, setData] = useState([]);
@@ -66,6 +67,7 @@ const TodoListTable = () => {
                 // Update data locally after successful response
                 setData(data.map(task => (task.id === currentTask.id ? updatedTask : task)));
                 handleCloseEditDialog();
+                toast.success('המשימה עודכנה בהצלחה');
             }
         }
     };
@@ -109,7 +111,13 @@ const TodoListTable = () => {
                         <tr
                             key={task.id}
                             style={{ textDecoration: task.status === "done" ? "line-through" : "none",
-                                    backgroundColor: task.status === "done" ? "green" : "transparent"
+                                    backgroundColor: task.status === "done"
+                                        ? "green"
+                                        : task.status === "in progress"
+                                        ? "darkblue"
+                                        : task.status === "todo"
+                                        ? "darkslategrey"
+                                        : "transparent"
                              }}
                         >
                             <td>{task.task}</td>
