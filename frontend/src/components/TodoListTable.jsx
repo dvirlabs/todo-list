@@ -106,7 +106,12 @@ const TodoListTable = () => {
                 </thead>
                 <tbody>
                     {Array.isArray(data) && data.map((task) => (
-                        <tr key={task.id}>
+                        <tr
+                            key={task.id}
+                            style={{ textDecoration: task.status === "done" ? "line-through" : "none",
+                                    backgroundColor: task.status === "done" ? "green" : "transparent"
+                             }}
+                        >
                             <td>{task.task}</td>
                             <td>
                                 <Select
