@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getTasks, deleteTask, undoDeleteTask, updateTask } from "../services/tasksTableService";
 import { Delete, Edit, Undo } from "@mui/icons-material";
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, Select, MenuItem } from "@mui/material";
+import { toast } from 'react-toastify';
 import '../style/TodoListTable.css';
 
 const TodoListTable = () => {
@@ -32,8 +33,8 @@ const TodoListTable = () => {
         const taskToDelete = data.find(task => task.id === taskId);
         setDeletedTasks([...deletedTasks, taskToDelete]);
         setData(data.filter(task => task.id !== taskId));
-
         deleteTask(taskId);
+        toast.success('המשימה נמחקה בהצלחה');
     };
 
     const handleUndoDelete = (task) => {
@@ -122,13 +123,7 @@ const TodoListTable = () => {
                             </td>
                             <td>{task.notes}</td>
                             <td>
-                                {/* <button className="action-button" onClick={() => handleOpenEditDialog(task)}>
-                                    <Edit color="warning" />
-                                </button> */}
                                 <Edit color="warning" className="action-button" onClick={() => handleOpenEditDialog(task)} />
-                                {/* <button className="action-button" onClick={() => handleDelete(task.id)}>
-                                    <Delete color="error" />
-                                </button> */}
                                 <Delete color="error" className="action-button" onClick={() => handleDelete(task.id)} />
                                 {deletedTasks.some(t => t.id === task.id) && (
                                 <button className="action-button" onClick={() => handleUndoDelete(task)}>

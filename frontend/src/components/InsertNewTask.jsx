@@ -47,7 +47,9 @@ const InsertNewTask = () => {
             if (error.message === "Status field cannot be empty") {
                 toast.error("שדה סטטוס חדשה חייב להיות מלא");
             }
-            toast.error("שדה משימה חדשה חייב להיות מלא");
+            else if (error.message === "Task field cannot be empty") {
+                toast.error("שדה משימה חדשה חייב להיות מלא");
+            }
         }
     };
 
