@@ -13,6 +13,13 @@ export const getTasks = async () => {
 
 
 export const createTask = async (task) => {
+    if (!task.task || task.task.trim() === "") {
+        throw new Error("Task field cannot be empty"); // Throw an error when the task field is empty
+    }
+    if (!task.status || task.status.trim() === "") {
+        throw new Error("Status field cannot be empty"); // Throw an error when the status field is empty
+    }
+
     try {
         const response = await fetch('http://localhost:8000/add_task', {
             method: 'POST',

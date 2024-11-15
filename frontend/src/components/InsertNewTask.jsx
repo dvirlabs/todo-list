@@ -2,14 +2,12 @@ import React, { useState } from "react";
 import '../style/InsertNewTask.css';
 import { createTask } from "../services/tasksTableService";
 import { Button, Select, MenuItem } from '@mui/material';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 
 
 
 const InsertNewTask = () => {
-    const TaskAdded = () => toast("המשימה נוספה בהצלחה");
-    const TaskFailedToAdded = () => toast("המשימה לא נוספה בהצלחה");
 
     const [task, setTask] = useState({
         task: '',
@@ -25,21 +23,31 @@ const InsertNewTask = () => {
         });
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async(event) => {
         event.preventDefault();
+
+        if (!task.task.trim) {
+            toast.error("שדה משימה חדשה חייב להיות מלא");
+            return;
+        }
+
         try {
-            createTask(task);
-
-            console.log(task);
-            setTask({
-                task: '',
-                status: '',
-                notes: ''
-            });
-
-            console.log(task);
+                const response = await createTask(task);
+                if (response.message) {
+                    toast.success("המשימה נוספה בהצלחה");
+                    setTask({
+                        task: '',
+                        status: '',
+                        notes: ''
+                    });
+                } else {
+                    toast.error("המשימה לא נוספה בהצלחה");
+                }
         } catch (error) {
-            console.log(error);   
+            if (error.message === "Status field cannot be empty") {
+                toast.error("שדה סטטוס חדשה חייב להיות מלא");
+            }
+            toast.error("שדה משימה חדשה חייב להיות מלא");
         }
     };
 
@@ -61,7 +69,7 @@ const InsertNewTask = () => {
                     <MenuItem value="done">בוצע</MenuItem>
                 </Select>
                 <input type="text" name="notes" value={task.notes} onChange={handleChange} placeholder="הערות" />
-                <Button type="submit" variant="contained" color="success" style={{ marginLeft: '10px', marginTop: '5px' }} onClick={TaskAdded}>הוסף משימה</Button>
+                <Button type="submit" variant="contained" color="success" style={{ marginLeft: '10px', marginTop: '5px' }} >הוסף משימה</Button>
             </form>
         </div>
     );
