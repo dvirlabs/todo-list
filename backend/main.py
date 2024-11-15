@@ -43,8 +43,6 @@ def remove_task(task_id: int):
 
 @app.put("/update_task/{task_id}")
 def modify_task(task_id: int, update_data: TaskUpdate):
-    # print(f"Received update request for task_id: {task_id}")
-    # print(f"Updated task data - task: {task}, status: {status}, notes: {notes}")
      return update_task(task_id, update_data.task, update_data.status, update_data.notes)
 
 

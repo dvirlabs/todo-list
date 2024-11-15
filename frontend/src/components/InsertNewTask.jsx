@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import '../style/InsertNewTask.css';
 import { createTask } from "../services/tasksTableService";
 import { Button, Select, MenuItem } from '@mui/material';
+import { toast } from 'react-toastify';
+
 
 
 
 const InsertNewTask = () => {
+
     const [task, setTask] = useState({
         task: '',
         status: '',
@@ -20,21 +23,33 @@ const InsertNewTask = () => {
         });
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async(event) => {
         event.preventDefault();
+
+        if (!task.task.trim) {
+            toast.error("שדה משימה חדשה חייב להיות מלא");
+            return;
+        }
+
         try {
-            createTask(task);
-
-            console.log(task);
-            setTask({
-                task: '',
-                status: '',
-                notes: ''
-            });
-
-            console.log(task);
+                const response = await createTask(task);
+                if (response.message) {
+                    toast.success("המשימה נוספה בהצלחה");
+                    setTask({
+                        task: '',
+                        status: '',
+                        notes: ''
+                    });
+                } else {
+                    toast.error("המשימה לא נוספה בהצלחה");
+                }
         } catch (error) {
-            console.log(error);   
+            if (error.message === "Status field cannot be empty") {
+                toast.error("שדה סטטוס חדשה חייב להיות מלא");
+            }
+            else if (error.message === "Task field cannot be empty") {
+                toast.error("שדה משימה חדשה חייב להיות מלא");
+            }
         }
     };
 
@@ -48,7 +63,7 @@ const InsertNewTask = () => {
                     value={task.status} 
                     onChange={handleChange} 
                     placeholder="מצב משימה"
-                    sx={{ width: '110px', height: '39px', marginTop: '7px', marginLeft: '10px', background: 'white', color: 'white', fontSize: '17px', fontFamily: 'Varela Round, sans-serif' }}
+                    sx={{ width: '110px', height: '39px', marginTop: '7px', marginLeft: '10px', background: 'white', fontSize: '17px', fontFamily: 'Gadi Almog, cursive' }}
 
                 >
                     <MenuItem value="todo">לעשות</MenuItem>
