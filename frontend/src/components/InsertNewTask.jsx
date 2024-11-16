@@ -61,11 +61,21 @@ const InsertNewTask = () => {
                     type="text" 
                     name="status" 
                     value={task.status} 
-                    onChange={handleChange} 
+                    onChange={handleChange}
+                    displayEmpty 
                     placeholder="מצב משימה"
-                    sx={{ width: '110px', height: '39px', marginTop: '7px', marginLeft: '10px', background: 'white', fontSize: '17px', fontFamily: 'Gadi Almog, cursive' }}
+                    sx={{ 
+                        width: '110px',
+                        height: '39px',
+                        marginTop: '7px',
+                        marginLeft: '10px',
+                        background: 'white',
+                        fontSize: '17px',
+                        fontFamily: 'Gadi Almog, cursive'
+                    }}
 
                 >
+                    <MenuItem sx={{ fontSize: '17px', fontFamily: 'Gadi Almog, cursive' }} value="" disabled>סטטוס</MenuItem>
                     <MenuItem value="todo">לעשות</MenuItem>
                     <MenuItem value="in progress">בתהליך</MenuItem>
                     <MenuItem value="done">בוצע</MenuItem>
