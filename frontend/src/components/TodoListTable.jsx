@@ -4,7 +4,6 @@ import { Delete, Edit, Undo } from "@mui/icons-material";
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, Select, MenuItem } from "@mui/material";
 import { toast } from 'react-toastify';
 import '../style/TodoListTable.css';
-import { blue } from "@mui/material/colors";
 
 const TodoListTable = () => {
     const [data, setData] = useState([]);
