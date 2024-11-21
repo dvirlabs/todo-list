@@ -1,13 +1,13 @@
-version: 3.8
+version: "3.8"
 services:
   frontend:
-    build: ./frontend
+    image: front:api_url_localhost
     ports:
       - "80:80"
   backend:
     build: ./backend
     ports:
-      - "8080:8080"
+      - "8000:8000"
     depends_on:
       - db
   db:
@@ -19,6 +19,5 @@ services:
       POSTGRES_PASSWORD: Aa123456
       POSTGRES_DB: postgres
     volumes:
-      - ./db_data:/var/lib/postgresql/data
       - ./db-init:/docker-entrypoint-initdb.d
     restart: always
