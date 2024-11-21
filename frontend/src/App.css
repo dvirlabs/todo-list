@@ -36,3 +36,8 @@
     transform: rotate(360deg);
   }
 }
+
+.toast-message {
+  font-family: 'Varela Round', sans-serif;
+  font-size: 20px;
+}

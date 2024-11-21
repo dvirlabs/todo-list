@@ -26,3 +26,5 @@ code {
   font-weight: normal;
   font-style: normal;
 }
+
+@import "react-toastify/dist/ReactToastify.css";

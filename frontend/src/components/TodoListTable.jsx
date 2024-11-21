@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getTasks, deleteTask, undoDeleteTask, updateTask } from "../services/tasksTableService";
 import { Delete, Edit, Undo } from "@mui/icons-material";
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, Select, MenuItem } from "@mui/material";
+import { toast } from 'react-toastify';
 import '../style/TodoListTable.css';
 
 const TodoListTable = () => {
@@ -32,8 +33,8 @@ const TodoListTable = () => {
         const taskToDelete = data.find(task => task.id === taskId);
         setDeletedTasks([...deletedTasks, taskToDelete]);
         setData(data.filter(task => task.id !== taskId));
-
         deleteTask(taskId);
+        toast.success('המשימה נמחקה בהצלחה');
     };
 
     const handleUndoDelete = (task) => {
@@ -65,6 +66,7 @@ const TodoListTable = () => {
                 // Update data locally after successful response
                 setData(data.map(task => (task.id === currentTask.id ? updatedTask : task)));
                 handleCloseEditDialog();
+                toast.success('המשימה עודכנה בהצלחה');
             }
         }
     };
@@ -105,8 +107,18 @@ const TodoListTable = () => {
                 </thead>
                 <tbody>
                     {Array.isArray(data) && data.map((task) => (
-                        <tr key={task.id}>
-                            {/* <td>{task.id}</td> */}
+                        <tr
+                            key={task.id}
+                            style={{ textDecoration: task.status === "done" ? "line-through" : "none",
+                                    backgroundColor: task.status === "done"
+                                        ? "green"
+                                        : task.status === "in progress"
+                                        ? "darkblue"
+                                        : task.status === "todo"
+                                        ? "darkslategrey"
+                                        : "transparent"
+                             }}
+                        >
                             <td>{task.task}</td>
                             <td>
                                 <Select
@@ -114,7 +126,7 @@ const TodoListTable = () => {
                                     onChange={(e) => handleStatusChange(task.id, e.target.value)}
                                     fullWidth
                                     variant="standard"
-                                    style={{ minWidth: "100px", color: "white", fontSize: "25px" }}
+                                    style={{ minWidth: "100px", color: "white", fontSize: "25px", fontFamily: 'Gadi Almog, cursive' }}
                                     >
                                     <MenuItem value="todo">לעשות</MenuItem>
                                     <MenuItem value="in progress">בתהליך</MenuItem>
@@ -123,16 +135,12 @@ const TodoListTable = () => {
                             </td>
                             <td>{task.notes}</td>
                             <td>
-                                <button className="action-button" onClick={() => handleOpenEditDialog(task)}>
-                                    <Edit color="warning" />
-                                </button>
-                                <button className="action-button" onClick={() => handleDelete(task.id)}>
-                                    <Delete color="error" />
-                                </button>
+                                <Edit color="warning" className="action-button" onClick={() => handleOpenEditDialog(task)} />
+                                <Delete color="error" className="action-button" onClick={() => handleDelete(task.id)} />
                                 {deletedTasks.some(t => t.id === task.id) && (
-                                    <button className="action-button" onClick={() => handleUndoDelete(task)}>
-                                    <Undo />
-                                    </button>
+                                <button className="action-button" onClick={() => handleUndoDelete(task)}>
+                                    <Undo color="info" />
+                                </button>
                                 )}
                             </td>
                         </tr>

@@ -1,3 +1,14 @@
+body {
+    direction: rtl;
+    text-align: right;
+  }
+  
+table {
+    margin-left: auto;
+    margin-right: auto;
+    width: 95%;
+}
+
 th, td {
     text-align: center;
     border: 1px solid gray;
@@ -13,7 +24,16 @@ td {
     font-family: 'Gadi Almog', cursive;
 }
 
-body {
-    direction: rtl;
-    text-align: right;
-  }
+button {
+    background-color: transparent;
+}
+
+.action-button {
+    margin: 7px;
+}
+
+.action-button:hover {
+    cursor: pointer;
+    color: royalblue;
+    font-size: 35px;
+}
