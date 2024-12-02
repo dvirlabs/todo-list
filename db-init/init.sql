@@ -1,4 +1,4 @@
-CREATE DATABASE IF NOT EXISTS todo_list;
+CREATE DATABASE todo_list;
 
 \c todo_list
 
