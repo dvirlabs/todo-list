@@ -17,7 +17,7 @@ services:
     networks:
       - todo_network
   db:
-    image: todo-list-db:v4
+    image: postgres
     ports:
       - "5432:5432"
     environment:
