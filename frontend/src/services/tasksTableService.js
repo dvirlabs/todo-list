@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8000'
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
 export const getTasks = async () => {
     try {
@@ -21,7 +21,7 @@ export const createTask = async (task) => {
     }
 
     try {
-        const response = await fetch('http://localhost:8000/add_task', {
+        const response = await fetch(`${API_URL}/add_task`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -44,7 +44,7 @@ export const createTask = async (task) => {
 
 export const deleteTask = async (taskId) => {
     try {
-        const response = await fetch(`http://localhost:8000/delete_task/${taskId}`, {
+        const response = await fetch(`${API_URL}/delete_task/${taskId}`, {
             method: 'DELETE',
         });
 
@@ -83,7 +83,7 @@ export const updateTask = async (taskId, updatedData) => {
 
 export const undoDeleteTask = async (taskId) => {
     try {
-        const response = await fetch(`http://localhost:8000/undo_delete_task/${taskId}`, {
+        const response = await fetch(`${API_URL}/undo_delete_task/${taskId}`, {
             method: 'POST', // Assuming undo is a POST request
         });
 
@@ -97,4 +97,3 @@ export const undoDeleteTask = async (taskId) => {
         throw error;
     }
 };
-

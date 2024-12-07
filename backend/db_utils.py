@@ -3,7 +3,7 @@ from psycopg2.extras import RealDictCursor
 
 def connect_to_db():
     conn = psycopg2.connect(
-        host="192.168.10.55",
+        host="db",
         port="5432",
         database="todo_list",
         user="postgres",
