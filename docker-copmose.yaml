@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   frontend:
-    image: front:api_url_backend
+    build: ./frontend
     ports:
       - "80:80"
   backend:
