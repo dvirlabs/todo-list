@@ -2,6 +2,7 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
 export const getTasks = async () => {
     try {
+        // do fucking axios for better restAPI connection
         const response = await fetch(`${API_URL}/get_all_tasks`)
         const data = await response.json()
         console.log(data)
@@ -21,6 +22,7 @@ export const createTask = async (task) => {
     }
 
     try {
+        // do fucking axios for better restAPI connection
         const response = await fetch(`${API_URL}/add_task`, {
             method: 'POST',
             headers: {
@@ -44,6 +46,7 @@ export const createTask = async (task) => {
 
 export const deleteTask = async (taskId) => {
     try {
+        // do fucking axios for better restAPI connection
         const response = await fetch(`${API_URL}/delete_task/${taskId}`, {
             method: 'DELETE',
         });
@@ -62,6 +65,7 @@ export const deleteTask = async (taskId) => {
 export const updateTask = async (taskId, updatedData) => {
     console.log(updatedData)
     try {
+        // do fucking axios for better restAPI connection
         const response = await fetch(`${API_URL}/update_task/${taskId}`, {
             method: 'PUT',
             headers: {
@@ -83,6 +87,7 @@ export const updateTask = async (taskId, updatedData) => {
 
 export const undoDeleteTask = async (taskId) => {
     try {
+        // do fucking axios for better restAPI connection
         const response = await fetch(`${API_URL}/undo_delete_task/${taskId}`, {
             method: 'POST', // Assuming undo is a POST request
         });
