@@ -24,6 +24,8 @@ export const EditTaskDialog = (isOpen,onClose,onSave,data) => {
                 fullWidth
                 margin="normal"
             />
+
+            {/* again this select list is all over the place remove it to a component and reuse it */}
             <Select
                 label="Status"
                 name="status"

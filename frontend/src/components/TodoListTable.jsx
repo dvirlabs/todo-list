@@ -117,6 +117,7 @@ const TodoListTable = () => {
                         >
                             <td>{task.task}</td>
                             <td>
+                                {/* again this select list is all over the place remove it to a component and reuse it */}
                                 <Select
                                     value={task.status}
                                     onChange={(e) => handleStatusChange(task.id, e.target.value)}
@@ -128,20 +129,6 @@ const TodoListTable = () => {
                                     <MenuItem value="in progress">בתהליך</MenuItem>
                                     <MenuItem value="done">בוצע</MenuItem>
                                 </Select>
-
-                                {/* 
-                                    make this a componnet this peace of code is reapatitive a lot
-                                    <Select 
-                                    value={task.status}
-                                    onChange={(e) => handleStatusChange(task.id, e.target.value)}
-                                    fullWidth
-                                    variant="standard"
-                                    style={{ minWidth: "100px", color: "white", fontSize: "25px", fontFamily: 'Gadi Almog, cursive' }}
-                                    >
-                                    <MenuItem value="todo">לעשות</MenuItem>
-                                    <MenuItem value="in progress">בתהליך</MenuItem>
-                                    <MenuItem value="done">בוצע</MenuItem>
-                                </Select> */}
                             </td>
                             <td>{task.notes}</td>
                             <td>
