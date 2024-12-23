@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { getTasks, deleteTask, undoDeleteTask, updateTask } from "../services/tasksTableService";
 import { Delete, Edit, Undo } from "@mui/icons-material";
-import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, Select, MenuItem } from "@mui/material";
+import { Select, MenuItem } from "@mui/material";
 import { toast } from 'react-toastify';
 import '../style/TodoListTable.css';
+import { EditTaskDialog } from './taskDialog';
 
 const TodoListTable = () => {
     const [data, setData] = useState([]);
@@ -14,19 +15,21 @@ const TodoListTable = () => {
     // Edit dialog state
     const [openEditDialog, setOpenEditDialog] = useState(false);
     const [currentTask, setCurrentTask] = useState(null);
-    const [editedTaskData, setEditedTaskData] = useState({ task: "", status: "", notes: "" });
 
     useEffect(() => {
         setIsLoading(true);
-        getTasks()
-            .then((data) => {
-                setData(data);
+        const fetchData = async () =>{
+            try {
+                const res = await getTasks();
+                setData(res);
                 setIsLoading(false);
-            })
-            .catch((error) => {
+            } catch (error) {
+                console.log(error);
                 setError(error);
                 setIsLoading(false);
-            });
+            }
+        }
+        fetchData();
     }, []);
 
     const handleDelete = (taskId) => {
@@ -47,7 +50,6 @@ const TodoListTable = () => {
     // Open edit dialog
     const handleOpenEditDialog = (task) => {
         setCurrentTask(task);
-        setEditedTaskData({ task: task.task, status: task.status, notes: task.notes });
         setOpenEditDialog(true);
     };
 
@@ -58,7 +60,7 @@ const TodoListTable = () => {
     };
 
     // Save the edited task
-    const handleSaveEdit = async () => {
+    const handleSaveEdit = async (editedTaskData) => {
         if (currentTask) {
             const updatedTask = { ...currentTask, ...editedTaskData };
             const response = await updateTask(updatedTask.id, editedTaskData);
@@ -85,12 +87,6 @@ const TodoListTable = () => {
         }
     };
 
-    // Handle input change for edited task
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setEditedTaskData(prevState => ({ ...prevState, [name]: value }));
-    };
-
     return (
         <div>
             {isLoading && <p>Loading...</p>}
@@ -106,7 +102,7 @@ const TodoListTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {Array.isArray(data) && data.map((task) => (
+                    {data.length && data.map((task) => (
                         <tr
                             key={task.id}
                             style={{ textDecoration: task.status === "done" ? "line-through" : "none",
@@ -121,6 +117,7 @@ const TodoListTable = () => {
                         >
                             <td>{task.task}</td>
                             <td>
+                                {/* again this select list is all over the place remove it to a component and reuse it */}
                                 <Select
                                     value={task.status}
                                     onChange={(e) => handleStatusChange(task.id, e.target.value)}
@@ -149,43 +146,7 @@ const TodoListTable = () => {
             </table>
 
             {/* Edit Task Dialog */}
-            <Dialog open={openEditDialog} onClose={handleCloseEditDialog}>
-                <DialogTitle>ערוך משימה</DialogTitle>
-                <DialogContent>
-                    <TextField
-                        label="ערוך משימה"
-                        name="task"
-                        value={editedTaskData.task}
-                        onChange={handleInputChange}
-                        fullWidth
-                        margin="normal"
-                    />
-                    <Select
-                        label="Status"
-                        name="status"
-                        value={editedTaskData.status}
-                        onChange={handleInputChange}
-                        fullWidth
-                        margin="dense"
-                    >
-                        <MenuItem value="todo">לעשות</MenuItem>
-                        <MenuItem value="in progress">בתהליך</MenuItem>
-                        <MenuItem value="done">בוצע</MenuItem>
-                    </Select>
-                    <TextField
-                        label="ערוך הערות"
-                        name="notes"
-                        value={editedTaskData.notes}
-                        onChange={handleInputChange}
-                        fullWidth
-                        margin="normal"
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCloseEditDialog} color="secondary">ביטול</Button>
-                    <Button onClick={handleSaveEdit} color="primary">שמור</Button>
-                </DialogActions>
-            </Dialog>
+            <EditTaskDialog isOpen={openEditDialog} onClose={handleCloseEditDialog} onSave={handleSaveEdit} data={currentTask} />
         </div>
     );
 };

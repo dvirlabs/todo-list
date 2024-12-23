@@ -27,29 +27,37 @@ const InsertNewTask = () => {
         event.preventDefault();
 
         if (!task.task.trim) {
+                        //remove all the string to a file with const variable that contain key:value
+            // and access that variable no need a lot of string every where
+            // change in one place and not in many
             toast.error("שדה משימה חדשה חייב להיות מלא");
             return;
         }
 
         try {
-                const response = await createTask(task);
-                if (response.message) {
+                const data = await createTask(task);
+                if (data) {
+                                //remove all the string to a file with const variable that contain key:value
+            // and access that variable no need a lot of string every where
+            // change in one place and not in many
                     toast.success("המשימה נוספה בהצלחה");
                     setTask({
                         task: '',
                         status: '',
                         notes: ''
                     });
-                } else {
-                    toast.error("המשימה לא נוספה בהצלחה");
-                }
+                } 
         } catch (error) {
+            //remove all the string to a file with const variable that contain key:value
+            // and access that variable no need a lot of string every where
+            // change in one place and not in many
             if (error.message === "Status field cannot be empty") {
                 toast.error("שדה סטטוס חדשה חייב להיות מלא");
             }
-            else if (error.message === "Task field cannot be empty") {
+            if (error.message === "Task field cannot be empty") {
                 toast.error("שדה משימה חדשה חייב להיות מלא");
             }
+            toast.error("המשימה לא נוספה בהצלחה");
         }
     };
 
@@ -57,6 +65,7 @@ const InsertNewTask = () => {
         <div className="insert-new-task-container" style={{marginTop: '10px', marginBottom: '10px'}}>
             <form onSubmit={handleSubmit}>
                 <input type="text" name="task" value={task.task} onChange={handleChange} placeholder="משימה חדשה" />
+                {/* again this select list is all over the place remove it to a component and reuse it */}
                 <Select
                     type="text" 
                     name="status" 
