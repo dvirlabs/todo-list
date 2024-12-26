@@ -1,0 +1,36 @@
+version: "3.8"
+services:
+  frontend:
+    image: todo-list:front-v3
+    ports:
+      - "80:80"
+    environment:
+      REACT_APP_API_URL: http://localhost:8000
+    networks:
+      - todo_network
+  backend:
+    image: todo-list:back-v3
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - todo_network
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Aa123456
+      POSTGRES_DB: todo_list
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+      - ./db-init:/docker-entrypoint-initdb.d
+    restart: always
+    networks:
+      - todo_network
+
+networks:
+  todo_network:
+    driver: bridge
