@@ -4,6 +4,7 @@ import { Delete, Edit, Undo } from "@mui/icons-material";
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField, Select, MenuItem } from "@mui/material";
 import { toast } from 'react-toastify';
 import '../style/TodoListTable.css';
+import eventEmitter from "./EventEmitter";
 
 const TodoListTable = () => {
     const [data, setData] = useState([]);
@@ -27,6 +28,25 @@ const TodoListTable = () => {
                 setError(error);
                 setIsLoading(false);
             });
+
+                    // Listen for taskAdded event to refetch tasks
+        const handleTaskAdded = () => {
+            console.log('taskAdded event received');
+            getTasks()
+                .then((data) => {
+                    console.log('Fetched tasks after taskAdded event:', data);
+                    setData(data);
+                })
+                .catch((error) => {
+                    setError(error);
+                });
+        };
+
+        eventEmitter.on('taskAdded', handleTaskAdded);
+
+        return () => {
+            eventEmitter.removeListener('taskAdded', handleTaskAdded);
+        };
     }, []);
 
     const handleDelete = (taskId) => {

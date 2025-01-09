@@ -3,6 +3,7 @@ import '../style/InsertNewTask.css';
 import { createTask } from "../services/tasksTableService";
 import { Button, Select, MenuItem } from '@mui/material';
 import { toast } from 'react-toastify';
+import eventEmitter from "./EventEmitter";
 
 
 
@@ -40,6 +41,9 @@ const InsertNewTask = () => {
                         status: '',
                         notes: ''
                     });
+
+                    eventEmitter.emit('taskAdded', { taskName: task.task });
+                    console.log('Task added event emitted:', task.task);
                 } else {
                     toast.error("המשימה לא נוספה בהצלחה");
                 }

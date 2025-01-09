@@ -1,14 +1,8 @@
-DO $$
-BEGIN
-    IF NOT EXISTS (SELECT FROM pg_database WHERE datname = 'todo_list') THEN
-        CREATE DATABASE todo_list;
-    END IF;
-END
-$$;
+CREATE DATABASE todo_list;
 
-\connect todo_list
+\c todo_list
 
-CREATE TABLE IF NOT EXISTS tasks (
+CREATE TABLE tasks (
     id SERIAL PRIMARY KEY,
     task TEXT NOT NULL,
     status VARCHAR(12) NOT NULL CHECK (status IN ('todo', 'in progress', 'done')),
