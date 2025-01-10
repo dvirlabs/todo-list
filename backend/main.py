@@ -17,9 +17,14 @@ class TaskUpdate(BaseModel):
 
 app = FastAPI()
 
+origins = [
+    "http://192.168.10.100",  # Allow frontend IP
+    "http://localhost",       # Allow localhost as well
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
