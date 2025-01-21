@@ -133,7 +133,7 @@ const TodoListTable = () => {
                                     backgroundColor: task.status === "done"
                                         ? "green"
                                         : task.status === "in progress"
-                                        ? "darkblue"
+                                        ? "rgb(206, 177, 245)"
                                         : task.status === "todo"
                                         ? "darkslategrey"
                                         : "transparent"
