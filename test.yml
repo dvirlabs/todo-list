@@ -1,0 +1,53 @@
+version: "3.9"
+
+services:
+  traefik:
+    image: traefik:v2.10
+    container_name: traefik
+    restart: always
+    command:
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--certificatesresolvers.cloudflare.acme.dnschallenge=true"
+      - "--certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare"
+      - "--certificatesresolvers.cloudflare.acme.email=your-email@example.com"
+      - "--certificatesresolvers.cloudflare.acme.storage=/letsencrypt/acme.json"
+      - "--api.dashboard=true"
+      - "--api.insecure=true"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./letsencrypt:/letsencrypt"
+    environment:
+      - CF_API_EMAIL=your-cloudflare-email@example.com
+      - CF_API_KEY=your-cloudflare-global-api-key
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.example.com`)"
+      - "traefik.http.routers.traefik.entrypoints=websecure"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.middlewares.auth.basicauth.users=dvirlabs:.p8KU15nDQWJpQv/qT1xmNNJh/"
+
+  httpd:
+    image: httpd:latest  # Your HTTPD container
+    container_name: httpd
+    networks:
+      - default
+    labels:
+      - "traefik.enable=true"  # Enable routing for this container
+      - "traefik.http.routers.httpd.rule=Host(`test.dvirlabs.com`)"  # Route traffic for test.dvirlabs.com
+      - "traefik.http.routers.httpd.entrypoints=websecure"  # Use HTTPS
+      - "traefik.http.services.httpd.loadbalancer.server.port=1111"  # Container listens on port 1111
+    expose:
+      - "1111"  # Expose port 1111 of the container to Traefik
+
+networks:
+  default:
+    external:
+      name: traefik
